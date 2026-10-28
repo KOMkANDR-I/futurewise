@@ -1,0 +1,127 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --bg: 246 248 252;
+  --surface: 255 255 255;
+  --surface-2: 240 243 249;
+  --border: 222 227 238;
+  --fg: 13 18 32;
+  --muted: 92 104 128;
+  --accent: 13 148 136;
+  --accent-fg: 255 255 255;
+  --violet: 124 58 237;
+  --good: 5 150 105;
+  --warn: 202 111 4;
+  --bad: 220 38 38;
+  color-scheme: light;
+}
+
+.dark {
+  --bg: 9 13 24;
+  --surface: 16 22 37;
+  --surface-2: 23 31 50;
+  --border: 36 46 70;
+  --fg: 232 236 245;
+  --muted: 140 152 178;
+  --accent: 45 212 191;
+  --accent-fg: 3 22 26;
+  --violet: 155 117 250;
+  --good: 52 211 153;
+  --warn: 251 191 36;
+  --bad: 248 113 113;
+  color-scheme: dark;
+}
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+  html {
+    -webkit-tap-highlight-color: transparent;
+  }
+  body {
+    @apply bg-bg text-fg antialiased;
+    font-feature-settings: "tnum" 1;
+  }
+  :focus-visible {
+    @apply outline-none ring-2 ring-accent ring-offset-2 ring-offset-bg;
+  }
+  ::selection {
+    background: rgb(var(--accent) / 0.25);
+  }
+}
+
+@layer components {
+  .card {
+    @apply rounded-2xl border bg-surface shadow-[0_1px_0_rgb(0_0_0/0.02),0_8px_24px_-12px_rgb(0_0_0/0.18)];
+  }
+  .eyebrow {
+    @apply text-xs font-semibold uppercase tracking-[0.14em] text-muted;
+  }
+  .no-scrollbar {
+    scrollbar-width: none;
+  }
+  .no-scrollbar::-webkit-scrollbar {
+    display: none;
+  }
+  .num {
+    font-variant-numeric: tabular-nums;
+  }
+  .grid-bg {
+    background-image: linear-gradient(rgb(var(--border) / 0.45) 1px, transparent 1px),
+      linear-gradient(90deg, rgb(var(--border) / 0.45) 1px, transparent 1px);
+    background-size: 44px 44px;
+    mask-image: radial-gradient(ellipse at 50% 0%, black 30%, transparent 75%);
+  }
+}
+
+input[type="range"] {
+  @apply h-1.5 w-full cursor-pointer appearance-none rounded-full bg-surface-2;
+  accent-color: rgb(var(--accent));
+}
+input[type="range"]::-webkit-slider-thumb {
+  @apply h-4 w-4 appearance-none rounded-full border-2 border-bg bg-accent shadow;
+}
+input[type="range"]::-moz-range-thumb {
+  @apply h-4 w-4 rounded-full border-2 border-bg bg-accent;
+}
+
+/* Печать и PDF: всегда светлая палитра, без анимаций. */
+@media print {
+  :root,
+  .dark {
+    --bg: 255 255 255;
+    --surface: 255 255 255;
+    --surface-2: 243 245 249;
+    --border: 215 221 233;
+    --fg: 13 18 32;
+    --muted: 82 94 118;
+    --accent: 13 148 136;
+    --violet: 124 58 237;
+    --good: 5 150 105;
+    --warn: 180 95 4;
+    --bad: 200 30 30;
+    color-scheme: light;
+  }
+  body {
+    -webkit-print-color-adjust: exact;
+    print-color-adjust: exact;
+  }
+  .animate-fade-up {
+    animation: none !important;
+  }
+  @page {
+    margin: 14mm;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    transition-duration: 0.01ms !important;
+  }
+}
