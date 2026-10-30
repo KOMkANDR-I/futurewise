@@ -6,7 +6,7 @@ import { Columns3, Copy, Download, FolderOpen, Pencil, Plus, Trash2, Upload } fr
 import { KIND_META, parseScenarios, runCrashTest, serializeScenarios, STATUS_META } from "@/lib/engine";
 import { createScenario, deleteScenario, duplicateScenario, getStorageError, useHydrated, useScenarios, type SavedScenario } from "@/lib/store";
 import { downloadText, safeFileName } from "@/lib/download";
-import { cn } from "@/lib/utils";
+import { cn, scenarioHref } from "@/lib/utils";
 import { pluralMonths } from "@/lib/format";
 import { Button } from "@/components/ui/button";
 import { Badge, Card, Dialog, EmptyState, Spinner, statusTone } from "@/components/ui/primitives";
@@ -26,7 +26,7 @@ function ScenarioRow({ s, onDelete, checked, onCheck }: { s: SavedScenario; onDe
       <input type="checkbox" checked={checked} onChange={(e) => onCheck(e.target.checked)} aria-label={`Выбрать «${s.title}» для сравнения`} className="size-4 shrink-0 accent-[rgb(var(--accent))]" />
       <div className="min-w-0 flex-1">
         <div className="flex flex-wrap items-center gap-2">
-          <Link href={`/scenario/${s.id}`} className="truncate font-display text-lg font-bold hover:text-accent">
+          <Link href={scenarioHref(s.id)} className="truncate font-display text-lg font-bold hover:text-accent">
             {s.title}
           </Link>
           {s.demo && <Badge tone="violet">демо</Badge>}
@@ -46,7 +46,7 @@ function ScenarioRow({ s, onDelete, checked, onCheck }: { s: SavedScenario; onDe
       )}
       <div className="flex gap-1">
         <Button asChild variant="secondary" size="sm">
-          <Link href={`/scenario/${s.id}`}>
+          <Link href={scenarioHref(s.id)}>
             <FolderOpen /> Открыть
           </Link>
         </Button>

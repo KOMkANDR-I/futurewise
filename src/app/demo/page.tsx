@@ -7,7 +7,7 @@ import { demoModel } from "@/lib/engine";
 import { createScenario } from "@/lib/store";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/primitives";
-import { cn } from "@/lib/utils";
+import { cn, scenarioHref } from "@/lib/utils";
 
 type Choice = "cash" | "installment" | "save";
 
@@ -27,7 +27,7 @@ export default function DemoPage() {
     setBusy(true);
     const label = OPTIONS.find((o) => o.id === choice)!.title;
     const s = createScenario(`Демо: ноутбук за 90 000 ₽ — ${label.toLowerCase()}`, demoModel(choice), true);
-    router.push(`/scenario/${s.id}`);
+    router.push(scenarioHref(s.id));
   };
 
   return (

@@ -42,7 +42,7 @@ import { StatementImport, type StatementApply } from "@/components/statement-imp
 import type { Debt, EarlyRepayment } from "@/lib/engine";
 import { createScenario, updateScenario } from "@/lib/store";
 import { formatRub } from "@/lib/format";
-import { cn } from "@/lib/utils";
+import { cn, scenarioHref } from "@/lib/utils";
 
 const formSchema = z.object({ title: z.string().trim().min(1, "Придумайте название").max(80, "Не длиннее 80 символов"), model: modelSchema });
 type FormValues = z.infer<typeof formSchema>;
@@ -380,7 +380,7 @@ export function ScenarioForm({ initial, editId }: { initial: { title: string; mo
       let id = editId;
       if (editId) updateScenario(editId, { title: values.title, model });
       else id = createScenario(values.title, model).id;
-      router.push(`/scenario/${id}`);
+      router.push(scenarioHref(id!));
     },
     () => setSubmitErrors(["Проверьте поля, отмеченные красным."]),
   );

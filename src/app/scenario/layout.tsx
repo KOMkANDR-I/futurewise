@@ -1,8 +1,8 @@
 "use client";
 
-import { useCallback, useEffect, useMemo, useState } from "react";
+import { Suspense, useCallback, useEffect, useMemo, useState } from "react";
 import Link from "next/link";
-import { useParams, usePathname } from "next/navigation";
+import { usePathname, useSearchParams } from "next/navigation";
 import { Activity, Bot, CalendarDays, FileQuestion, FileText, Flag, GitBranch, Grid3x3, Lightbulb, Pencil, Scale, ShieldAlert, Target } from "lucide-react";
 import { Tour, tourSeen, WORKSPACE_TOUR } from "@/components/tour";
 import { KIND_META, runCrashTest, type ModelInput } from "@/lib/engine";
@@ -11,7 +11,7 @@ import { WorkspaceContext } from "@/components/workspace/context";
 import { ParamsPanel } from "@/components/workspace/params-panel";
 import { Button } from "@/components/ui/button";
 import { Badge, EmptyState, Spinner } from "@/components/ui/primitives";
-import { cn } from "@/lib/utils";
+import { cn, scenarioHref } from "@/lib/utils";
 import { pluralMonths } from "@/lib/format";
 
 const TABS = [
@@ -26,15 +26,24 @@ const TABS = [
   { href: "/report", label: "Отчёт", icon: FileText },
 ];
 
+// id — в параметре ?id=, а не в пути: так сайт работает на статическом хостинге.
 export default function ScenarioLayout({ children }: { children: React.ReactNode }) {
-  const { id } = useParams<{ id: string }>();
-  const path = usePathname();
+  return (
+    <Suspense fallback={null}>
+      <Workspace>{children}</Workspace>
+    </Suspense>
+  );
+}
+
+function Workspace({ children }: { children: React.ReactNode }) {
+  const id = useSearchParams().get("id") ?? "";
+  const path = usePathname()?.replace(/\/$/, "");
   const hydrated = useHydrated();
   const scenario = useScenario(id);
   const setModel = useCallback((m: ModelInput) => updateScenario(id, { model: m }), [id]);
   const result = useMemo(() => (scenario ? runCrashTest(scenario.model) : null), [scenario]);
   const [tourOpen, setTourOpen] = useState(false);
-  const onResults = path === `/scenario/${id}`;
+  const onResults = path === "/scenario";
   // Экскурсия запускается один раз — при первом открытии итогов.
   useEffect(() => {
     if (!hydrated || !scenario || !onResults || tourSeen()) return;
@@ -70,7 +79,6 @@ export default function ScenarioLayout({ children }: { children: React.ReactNode
       </div>
     );
 
-  const base = `/scenario/${id}`;
   const v = result.validation;
 
   return (
@@ -100,12 +108,11 @@ export default function ScenarioLayout({ children }: { children: React.ReactNode
         <nav className="no-scrollbar -mx-4 mt-6 overflow-x-auto px-4 print:hidden" aria-label="Разделы сценария" data-tour="tabs">
           <ul className="flex min-w-max gap-1 border-b">
             {TABS.map((t) => {
-              const href = base + t.href;
-              const active = t.href === "" ? path === base : path?.startsWith(href);
+              const active = t.href === "" ? onResults : path?.startsWith(`/scenario${t.href}`);
               return (
                 <li key={t.href}>
                   <Link
-                    href={href}
+                    href={scenarioHref(id, t.href)}
                     aria-current={active ? "page" : undefined}
                     className={cn(
                       "-mb-px flex items-center gap-2 border-b-2 px-3 py-3 text-sm font-medium transition",

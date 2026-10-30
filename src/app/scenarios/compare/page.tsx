@@ -10,7 +10,7 @@ import { BalanceChart, PALETTE } from "@/components/balance-chart";
 import { Button } from "@/components/ui/button";
 import { Badge, Card, EmptyState, Segmented, Spinner, statusTone } from "@/components/ui/primitives";
 import { formatPct, formatRub, pluralMonths } from "@/lib/format";
-import { cn } from "@/lib/utils";
+import { cn, scenarioHref } from "@/lib/utils";
 
 const MODES: Mode[] = ["base", "adverse", "stress"];
 
@@ -83,7 +83,7 @@ function CompareScenarios() {
                   <th key={s.id} className="p-3 text-left">
                     <span className="flex items-center gap-2">
                       <span className="size-2.5 shrink-0 rounded-full" style={{ background: PALETTE[i % PALETTE.length] }} />
-                      <Link href={`/scenario/${s.id}`} className="font-display font-bold hover:text-accent">
+                      <Link href={scenarioHref(s.id)} className="font-display font-bold hover:text-accent">
                         {s.title}
                       </Link>
                     </span>

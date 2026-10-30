@@ -13,7 +13,7 @@ import { BalanceChart, SERIES_COLORS } from "@/components/balance-chart";
 import { Badge, Card, Segmented, statusTone } from "@/components/ui/primitives";
 import { Button } from "@/components/ui/button";
 import { formatRub, fromMonth, inMonth, pluralMonths } from "@/lib/format";
-import { cn } from "@/lib/utils";
+import { cn, scenarioHref } from "@/lib/utils";
 
 const MODES: Mode[] = ["base", "adverse", "stress"];
 
@@ -233,12 +233,12 @@ export default function ResultsPage() {
 
       <div className="flex flex-wrap gap-3">
         <Button asChild>
-          <Link href={`/scenario/${scenario.id}/breakpoints`}>
+          <Link href={scenarioHref(scenario.id, "/breakpoints")}>
             Найти свой предел <ArrowRight />
           </Link>
         </Button>
         <Button asChild variant="secondary">
-          <Link href={`/scenario/${scenario.id}/compare`}>Сравнить другие варианты</Link>
+          <Link href={scenarioHref(scenario.id, "/compare")}>Сравнить другие варианты</Link>
         </Button>
       </div>
     </div>

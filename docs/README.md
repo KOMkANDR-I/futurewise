@@ -4,7 +4,7 @@
 | --- | --- |
 | Презентация | [FUTUREWISE.pdf](FUTUREWISE.pdf) · [FUTUREWISE.pptx](FUTUREWISE.pptx) |
 | Финансовая модель | [FUTUREWISE_financial_model.xlsx](FUTUREWISE_financial_model.xlsx) |
-| Работающее демо | https://futurewise-app.netlify.app |
+| Работающее демо | https://futurewise.tuqo.ru |
 | Исходный код | https://github.com/KOMkANDR-I/futurewise |
 
 Ниже: описание проекта, оценка рынка, бизнес-модель и финансовая модель, план внедрения и развития.
